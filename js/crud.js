@@ -54,7 +54,8 @@ const Crud = {
     const userId = Auth.getUserId();
     if (!userId) throw new Error('Debes iniciar sesión como administrador');
 
-    const filePath = `${userId}/${Date.now()}_${file.name}`;
+    const safeName = file.name.replace(/ /g, '_').replace(/[^a-zA-Z0-9._-]/g, c => encodeURIComponent(c));
+    const filePath = `${userId}/${Date.now()}_${safeName}`;
 
     const { error: uploadError } = await sb.storage
       .from(CONFIG.STORAGE_BUCKET)
