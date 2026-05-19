@@ -54,7 +54,7 @@ const Crud = {
     const userId = Auth.getUserId();
     if (!userId) throw new Error('Debes iniciar sesión como administrador');
 
-    const safeName = file.name.replace(/ /g, '_').replace(/[^a-zA-Z0-9._-]/g, c => encodeURIComponent(c));
+    const safeName = file.name.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]/g, '_');
     const filePath = `${userId}/${Date.now()}_${safeName}`;
 
     const { error: uploadError } = await sb.storage
